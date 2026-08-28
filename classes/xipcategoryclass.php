@@ -43,7 +43,7 @@ class xipcategoryclass extends ObjectModel
     {
 		if($id_category == NULL || $id_category == 0)
 			return false;
-		$sql = 'SELECT xc.`id_xipcategory` FROM `'._DB_PREFIX_.'xipcategory` xc WHERE xc.`category_type` = "'.($category_type ? $category_type : 'category').'" AND xc.active = 1 AND xc.`id_xipcategory` = '.$id_category;
+		$sql = 'SELECT xc.`id_xipcategory` FROM `'._DB_PREFIX_.'xipcategory` xc WHERE xc.`category_type` = "'.($category_type ? pSQL($category_type) : 'category').'" AND xc.active = 1 AND xc.`id_xipcategory` = '.(int)$id_category;
 		$rslts = Db::getInstance()->getrow($sql);
 			return (isset($rslts['id_xipcategory']) && !empty($rslts['id_xipcategory'])) ? true : false;
     }
