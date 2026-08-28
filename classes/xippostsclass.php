@@ -289,7 +289,7 @@ class xippostsclass extends ObjectModel
     {
 		if($id_post == NULL || $id_post == 0)
 			return false;
-		$sql = 'SELECT xc.`id_xipposts` FROM `'._DB_PREFIX_.'xipposts` xc WHERE xc.`post_type` = "'.($post_type ? $post_type : 'post').'" AND xc.active = 1 AND xc.`id_xipposts` = '.$id_post;
+		$sql = 'SELECT xc.`id_xipposts` FROM `'._DB_PREFIX_.'xipposts` xc WHERE xc.`post_type` = "'.($post_type ? pSQL($post_type) : 'post').'" AND xc.active = 1 AND xc.`id_xipposts` = '.(int)$id_post;
 		$rslts = Db::getInstance()->getrow($sql);
 			return (isset($rslts['id_xipposts']) && !empty($rslts['id_xipposts'])) ? true : false;
     }
@@ -300,7 +300,7 @@ class xippostsclass extends ObjectModel
 		$id_lang = (int)Context::getContext()->language->id;
 		$id_shop = (int)Context::getContext()->shop->id;
 		$sql = 'SELECT xcl.`link_rewrite` FROM `'._DB_PREFIX_.'xipposts` xc INNER JOIN `'._DB_PREFIX_.'xipposts_lang` xcl ON (xc.`id_xipposts` = xcl.`id_xipposts` AND xcl.`id_lang` = '.$id_lang.') INNER JOIN `'._DB_PREFIX_.'xipposts_shop` xcs ON (xc.`id_xipposts` = xcs.`id_xipposts` AND xcs.`id_shop` = '.$id_shop.') ';
-		$sql .= ' WHERE xc.`post_type` = "'.($post_type ? $post_type : 'post').'" AND xc.`id_xipposts` = "'.$id.'" ';
+		$sql .= ' WHERE xc.`post_type` = "'.($post_type ? pSQL($post_type) : 'post').'" AND xc.`id_xipposts` = "'.(int)$id.'" ';
 		$rslts = Db::getInstance()->getrow($sql);
 			return isset($rslts['link_rewrite']) ? $rslts['link_rewrite'] : NULL;
     }
@@ -452,7 +452,7 @@ class xippostsclass extends ObjectModel
 			$sql .= ' AND xc.category_default = '.$category_default;
 		}
 		if($post_type != NULL){
-			$sql .= ' AND xc.post_type = "'.$post_type.'" ';
+			$sql .= ' AND xc.post_type = "'.pSQL($post_type).'" ';
 		}
 		$sql .= ' ORDER BY xc.`position` DESC ';
 		$queryexec = Db::getInstance()->getrow($sql);
@@ -478,7 +478,7 @@ class xippostsclass extends ObjectModel
 			$sql .= ' AND xc.category_default = '.$category_default;
 		}
 		if($post_type != NULL){
-			$sql .= ' AND xc.post_type = "'.$post_type.'" ';
+			$sql .= ' AND xc.post_type = "'.pSQL($post_type).'" ';
 		}
 		$sql .= ' ORDER BY xc.`position`  '.$order_by;
 		$sql .= ' LIMIT '.(((int)$p - 1) * (int)$n).','.(int)$n;
